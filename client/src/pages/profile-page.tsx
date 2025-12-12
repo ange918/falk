@@ -41,7 +41,7 @@ export default function ProfilePage() {
     }
   }, [userId]);
 
-  if (!profileUser) return <Layout><div>Loading...</div></Layout>;
+  if (!profileUser) return <div>Loading...</div>;
 
   const isOwnProfile = currentUser?.id === profileUser.id;
   const canContract = currentUser?.type === 'stylist' && profileUser.type === 'young_stylist' && !profileUser.isOccupied;
