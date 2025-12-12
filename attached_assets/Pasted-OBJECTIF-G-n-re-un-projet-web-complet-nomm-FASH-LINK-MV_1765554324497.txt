@@ -1,0 +1,125 @@
+OBJECTIF
+Génère un projet web complet nommé **FASH'LINK** (MVP) avec Vite + React + TypeScript. C'est une plateforme qui met en relation stylistes confirmés et jeunes stylistes/couturiers. Le rendu doit être professionnel, mode-friendly, minimaliste (noir sur blanc) et mobile-first.
+
+TECH STACK (obligatoire)
+- Vite (template React + TypeScript)
+- React Router pour pages
+- CSS Modules (ou un CSS global bien structuré)
+- Boxicons pour les icônes (CDN)
+- Framer Motion optionnel pour animations légères
+- Pas de backend requis : simule les données avec /src/data/*.json ; formulaire sauvegarde côté client (localStorage) ; admin validation simulée.
+
+CHARTE VISUELLE
+- Palette : fond blanc #FFFFFF, texte #000000, accents sombres #111111 / #333333.
+- Police : Montserrat (Google Fonts).
+- Titres en MAJUSCULES.
+- Design aéré, images grandes, boutons noirs sur blanc.
+- Icônes : Boxicons.
+
+ARBORESCENCE (RENDUE)
+- index.html
+- vite.config.ts
+- package.json
+- /src
+  - main.tsx
+  - App.tsx
+  - /data
+    - users.json (seed)
+    - projects.json (seed)
+  - /pages
+    - Home.tsx
+    - Styliste.tsx
+    - JeuneStyliste.tsx
+    - Fonctionnalites.tsx
+    - Packs.tsx
+    - About.tsx
+    - Contact.tsx
+    - Admin.tsx (admin validation UI)
+  - /components
+    - Header.tsx
+    - Footer.tsx
+    - Hero.tsx
+    - StatCounters.tsx (compteurs animés)
+    - Gallery.tsx (lightbox)
+    - ModalForm.tsx (inscription)
+    - CardProfile.tsx
+    - PackCard.tsx
+    - MobileMenu.tsx
+  - /styles
+    - globals.css
+    - header.module.css
+    - hero.module.css
+    - counters.module.css
+    - modal.module.css
+  - /assets (images placeholders)
+- README.md (installation & run)
+
+PAGES & FONCTIONNALITÉS (détaillées)
+
+1) HOME
+- HERO full-width : grand visuel + titre “FASH'LINK” + 2 CTA : “JE SUIS STYLISTE” / “JE SUIS JEUNE STYLISTE” (ancrent vers pages correspondantes).
+- Section AVANTAGES / proposition de valeur.
+- Section STATISTIQUES animées (component StatCounters) — compteurs comptant au scroll (ex : PROFILS VALIDÉS, MISSIONS PUBLIÉES, PARTENAIRES).
+- Section RÉALISATIONS / Galerie (Gallery component).
+- Footer global.
+
+2) PAGE STYLISTE (/styliste)
+- Présentation service, bénéfices, formulaire d'inscription styliste (ModalForm).
+- Explication du processus (comment poster une mission).
+- Bouton pour voir profils jeunes disponibles.
+
+3) PAGE JEUNE STYLISTE (/jeune-styliste)
+- Explication + formulaire d’inscription en 4 étapes (client-side wizard) : étape 1 base, 2 compétences & spécialités, 3 portfolio (upload preview via FileReader), 4 confirmation.  
+- L’utilisateur ne peut **pas** publier son profil directement : sa soumission passe en attente et se trouve dans /src/data/pendingUsers.json — visible dans la page Admin pour validation.
+- Géolocalisation : bouton “Trouver des missions proches” qui utilise navigator.geolocation ; affichage lat/lon et message simulé “Missions à proximité : 4”.
+
+4) PAGE FONCTIONNALITÉS (/fonctionnalites)
+- Liste des fonctionnalités MVP : publication d’offres, consultation profils, chat (simulé), géolocalisation, notation & recommandations.
+- CTA vers /packs.
+
+5) PAGE PACKS (/packs)
+- Offre commerciale : packs (Gratuit, Premium Styliste, Pack Crédits Urgents), présentation visuelle en cartes (PackCard).
+- Chaque pack a description, prix, avantages. Bouton achat simule un checkout (modal, sans paiement réel).
+
+6) PAGE ABOUT (/about)
+- HERO + petite description, “COMMENT ÇA MARCHE” (3 étapes visuelles).
+- Sections FAQ et BLOG comme sous-sections de la page About (FAQ accordion; Blog list with articles seeds).
+- Galerie média + vidéo embed (YouTube) intégrée après À-propos.
+- Inclure la section ÉQUIPE (deux personnes) avec images, nom et icônes réseaux sous leur nom.
+
+7) PAGE CONTACT (/contact)
+- Formulaire contact (nom, email, message, sujet) avec validation JS, submission simulée (toast success).
+- Coordonnées de l’organisation et liens réseaux (placeholders).
+
+8) ADMIN (/admin)
+- Interface simple (protéger par mot de passe front-end dans env variable ou prompt) listant les inscriptions en attente (pendingUsers.json).
+- Actions : VALIDER (déplace vers users.json) ou REJETER.
+- Permet au “admin” d’activer un profil pour qu’il soit visible publiquement.
+
+COMPORTEMENTS JS & ACCESSIBILITÉ
+- Menu responsive (hamburger) et smooth scrolling.
+- Lightbox pour les images portfolio.
+- Tous les titres H1/H2 cohérents, balises sémantiques, alt="" sur images.
+- Validation formulaire client-side (email regex, champs requis).
+- Upload preview via FileReader (pas d’upload serveur).
+- Compteurs animés avec IntersectionObserver (se lancent à l’affichage).
+
+SEED DATA (obligatoire)
+- /src/data/users.json : quelques jeunes stylistes (id, nom, skills, location, portfolio images reference, status: validated).
+- /src/data/pendingUsers.json : exemple d’inscription en attente.
+- /src/data/packs.json : packs détaillés.
+
+DELIVERABLES
+- Code complet prêt à lancer : `npm install` + `npm run dev`.
+- README clair (installation, run, comment ajouter admin password, remplacer images).
+- Tous les composants commentés et modulaires.
+- Exportable et déployable sur Vercel / Netlify.
+
+BONUS (optionnel à générer si demandé)
+- Intégration minimale Stripe sandbox pour Pack purchase (simulation), ou PayPal.
+- Small serverless function (Netlify/Vercel) pour formulaire contact relay (optionnel).
+
+NOTES & CONSIGNES SUPPLÉMENTAIRES
+- Respecte le style noir-sur-blanc strict : titres en majuscules, boutons noirs sur fond blanc, accents sombres.
+- Utilise Boxicons pour icônes (menu, search, social).
+- Évite le verbose : textes courts, percutants, orientés conversion.

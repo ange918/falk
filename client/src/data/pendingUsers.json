@@ -1,0 +1,18 @@
+[
+  {
+    "id": "pending_1",
+    "name": "Lucas Mode",
+    "email": "lucas@example.com",
+    "type": "young_stylist",
+    "status": "pending",
+    "submittedAt": "2024-05-10T10:00:00Z"
+  },
+  {
+    "id": "pending_2",
+    "name": "Sophie Design",
+    "email": "sophie@example.com",
+    "type": "stylist",
+    "status": "pending",
+    "submittedAt": "2024-05-11T14:30:00Z"
+  }
+]
