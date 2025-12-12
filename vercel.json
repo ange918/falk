@@ -5,11 +5,11 @@
       "destination": "/dist/public/assets/$1"
     },
     {
-      "source": "/(.*\\.(png|jpg|jpeg|svg|ico|json))",
-      "destination": "/dist/public/$1"
+      "source": "/(.*)\\.(png|jpg|jpeg|svg|ico|json)",
+      "destination": "/dist/public/$1.$2"
     },
     {
-      "source": "/(.*)",
+      "source": "/((?!assets/|.*\\..*).*)",
       "destination": "/dist/public/index.html"
     }
   ]
