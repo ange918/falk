@@ -1,0 +1,174 @@
+Créer un projet complet nommé **FASH’LINK**, développé avec Vite + React + TypeScript + React Router + TailwindCSS.  
+FASH’LINK est un réseau professionnel pour stylistes et jeunes stylistes permettant :
+
+1. Création de compte (styliste ou jeune styliste)
+2. Profil public style “Instagram”
+3. Galerie d’images (publications)
+4. Système de follow / like
+5. Messagerie interne entre utilisateurs
+6. Exploration de profils
+7. Fonction contrat : un styliste peut “réserver” un jeune styliste.  
+   Si un jeune styliste a un contrat actif, son profil doit afficher **“Occupé — sous contrat”** et :
+   - on ne peut plus lui envoyer de message
+   - bouton “Contacter” désactivé
+   - son profil apparaît avec un badge ROUGE “OCCUPÉ”
+   - dans l’explore page, il s’affiche grisé
+
+STACK TECHNIQUE
+- Vite
+- React
+- TypeScript
+- React Router
+- TailwindCSS
+- localStorage (stockage des comptes, messages, contrats)
+- JSON mocks pour données de base
+- Icônes : HeroIcons
+
+IDENTITÉ VISUELLE
+- Style minimaliste et moderne
+- Inspiration Instagram / Behance
+- Couleurs : Noir (#000), Blanc (#fff), Gris (#222)
+- Police : Montserrat
+
+ARBORESCENCE DU PROJET
+/src
+  - main.tsx
+  - App.tsx
+  - /data
+      users.json
+      posts.json
+      messages.json
+      contracts.json
+  - /context
+      AuthContext.tsx
+  - /pages
+      Home.tsx
+      Explore.tsx
+      Profile.tsx
+      Inbox.tsx
+      Chat.tsx
+      Settings.tsx
+      Admin.tsx
+  - /components
+      Header.tsx
+      Footer.tsx
+      UserCard.tsx
+      ProfileHeader.tsx
+      ProfileGallery.tsx
+      ChatInput.tsx
+      ContractBadge.tsx
+  - /utils
+      storage.ts
+  - /styles
+      globals.css
+
+FONCTIONNALITÉS A DÉVELOPPER
+
+============================
+1) AUTHENTIFICATION SIMULÉE
+============================
+- Inscription : nom, email, mot de passe, type (styliste ou jeune styliste), bio, photo de profil.
+- Stockage localStorage.
+- Connexion/déconnexion.
+- Redirection vers profil après login.
+
+==========================================
+2) PROFIL STYLE INSTAGRAM (PUBLIC/PRIVÉ)
+==========================================
+Chaque utilisateur possède :
+- photo de profil
+- nom
+- bio
+- type : styliste / jeune styliste
+- galerie photo (upload avec FileReader)
+- compteur followers / following
+- likes sur chaque post
+
+Composants :
+- ProfileHeader
+- ProfileGallery
+- Badge OCCUPÉ si contrat actif
+
+====================================================
+3) SYSTEME D’EXPLORATION DES PROFILS (PAGE EXPLORE)
+====================================================
+- Affichage de tous les profils (grid)
+- Filtres : styliste / jeune styliste
+- Si un jeune styliste est sous contrat :
+  * carte grisée
+  * badge rouge “OCCUPÉ”
+  * bouton “Voir Profil” toujours actif mais “Message” désactivé
+
+======================================
+4) SYSTEME DE CONTRAT (FONCTION UNIQUE)
+======================================
+Objectif :
+Un styliste peut signer un contrat avec un jeune styliste.
+
+Spécifications :
+- Un jeune styliste ne peut avoir qu’un seul contrat actif.
+- Lorsqu'un styliste clique "Proposer un contrat":
+  - popup confirmation
+  - si accepté → création du contrat dans localStorage (contracts.json)
+
+EFFETS IMMÉDIATS :
+- Profil du jeune styliste devient **OCCUPÉ**.
+- Son statut visible partout : profil, explore, messagerie.
+- Impossible d’envoyer un message sauf par le styliste sous contrat.
+- Boutons désactivés pour tous les autres stylistes.
+- Dans la page Inbox, seul le styliste contractant peut lui écrire.
+
+====================================
+5) MESSAGERIE INTERNE (CHAT SYSTEM)
+====================================
+Fonctionnalités :
+- inbox avec dernières conversations
+- chat temps réel simulé (append auto)
+- messages stockés en localStorage
+
+Règles liées au contrat :
+- Si jeune styliste est OCCUPÉ :
+   * uniquement son styliste contractant peut lui envoyer un message
+   * “Message désactivé — sous contrat” pour les autres
+
+==========================
+6) FOLLOW / LIKE SIMULÉS
+==========================
+- follow/unfollow stockés en localStorage
+- like/unlike sur les publications
+
+====================================================
+7) ADMIN (OPTIONNEL)
+====================================================
+- page admin avec validation des comptes
+- liste des contrats actifs
+
+=====================
+8) RESPONSIVE DESIGN
+=====================
+- Support smartphone obligatoire
+- Header mobile avec menu hamburger
+- Galerie responsive (3 colonnes / 2 / 1 selon écran)
+
+========================
+COMPORTEMENTS JS ATTENDUS
+========================
+- Détection contrat pour bloquer les actions
+- Badge dynamique OCCUPÉ
+- Mise à jour en temps réel du statut (localStorage)
+- Upload images avec aperçu
+- Navigation fluide
+- Animations simples
+
+DELIVERABLE FINAL ATTENDU
+=========================
+Un projet complet fonctionnel, prêt à présenter :
+- Authentification
+- Profils style Instagram
+- Explorer
+- Messagerie
+- Contrats
+- Badge Occupé
+- Suivi & likes
+- Clean UI
+- Full responsive
