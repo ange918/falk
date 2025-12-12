@@ -4,7 +4,8 @@ import { Button } from "@/components/ui/button";
 import { 
   LogOut,
   Menu,
-  ChevronDown
+  ChevronDown,
+  User
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -30,8 +31,14 @@ export function Header() {
         <nav className="hidden md:flex items-center space-x-6 text-sm font-bold uppercase tracking-wide">
           {!user ? (
             <>
+              <Link href="/about">
+                <a className={location === "/about" ? "text-black" : "text-gray-500 hover:text-black transition-colors"}>
+                  À propos
+                </a>
+              </Link>
+
               <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-1 hover:text-gray-600 transition-colors focus:outline-none">
+                <DropdownMenuTrigger className="flex items-center gap-1 hover:text-gray-600 transition-colors focus:outline-none uppercase font-bold tracking-wide">
                   Catégories <ChevronDown className="w-4 h-4" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent>
@@ -47,12 +54,6 @@ export function Header() {
               <Link href="/fonctionnalites">
                 <a className={location === "/fonctionnalites" ? "text-black" : "text-gray-500 hover:text-black transition-colors"}>
                   Fonctionnalités
-                </a>
-              </Link>
-
-              <Link href="/about">
-                <a className={location === "/about" ? "text-black" : "text-gray-500 hover:text-black transition-colors"}>
-                  À propos
                 </a>
               </Link>
             </>
@@ -74,11 +75,16 @@ export function Header() {
 
         <div className="flex items-center gap-4">
           {!user ? (
-            <div className="hidden md:flex gap-4">
+            <div className="flex items-center gap-4">
               <Link href="/auth">
-                <Button variant="ghost" className="font-bold uppercase tracking-wide">Connexion</Button>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <User className="h-5 w-5" />
+                </Button>
+                <Button variant="ghost" size="icon" className="hidden md:inline-flex">
+                   <User className="h-5 w-5" />
+                </Button>
               </Link>
-              <Link href="/auth">
+              <Link href="/auth" className="hidden md:block">
                 <Button className="bg-black text-white hover:bg-neutral-800 rounded-none font-bold uppercase tracking-wide">
                   S'inscrire
                 </Button>
