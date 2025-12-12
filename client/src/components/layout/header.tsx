@@ -50,22 +50,11 @@ export function Header() {
                 </a>
               </Link>
 
-              <DropdownMenu>
-                <DropdownMenuTrigger className="flex items-center gap-1 hover:text-gray-600 transition-colors focus:outline-none">
-                  À propos <ChevronDown className="w-4 h-4" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent>
-                  <DropdownMenuItem asChild>
-                    <Link href="/about" className="w-full cursor-pointer">Notre Histoire</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/packs" className="w-full cursor-pointer">Nos Offres</Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/contact" className="w-full cursor-pointer">Contact</Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <Link href="/about">
+                <a className={location === "/about" ? "text-black" : "text-gray-500 hover:text-black transition-colors"}>
+                  À propos
+                </a>
+              </Link>
             </>
           ) : (
             <>

@@ -1,7 +1,56 @@
 import { Footer } from "@/components/marketing/footer";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { PackCard } from "@/components/marketing/pack-card";
+import { useToast } from "@/hooks/use-toast";
+
+const PACKS = [
+  {
+    id: "pack_free",
+    name: "GRATUIT",
+    price: "0€",
+    features: [
+      "Profil public basique",
+      "Recherche limitée",
+      "10 contacts / mois"
+    ],
+    highlight: false
+  },
+  {
+    id: "pack_stylist",
+    name: "PREMIUM STYLISTE",
+    price: "29€/mois",
+    features: [
+      "Profil mis en avant",
+      "Recherche illimitée",
+      "Contacts illimités",
+      "Badge 'Vérifié'",
+      "Support prioritaire"
+    ],
+    highlight: true
+  },
+  {
+    id: "pack_credits",
+    name: "PACK URGENT",
+    price: "15€",
+    features: [
+      "Boost de visibilité 7 jours",
+      "5 contacts d'urgence",
+      "Accès CVthèque 24h"
+    ],
+    highlight: false
+  }
+];
 
 export default function AboutPage() {
+  const { toast } = useToast();
+
+  const handleBuy = (packName: string) => {
+    toast({
+      title: "Redirection vers le paiement",
+      description: `Vous avez sélectionné le pack ${packName}. (Simulation)`,
+    });
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <div className="relative py-32 bg-neutral-100">
@@ -44,8 +93,27 @@ export default function AboutPage() {
         </div>
       </section>
 
+      {/* Offers Section (Integrated from Packs) */}
+      <section className="py-20 bg-neutral-50 border-y border-neutral-200" id="offres">
+        <div className="container px-4">
+          <h2 className="text-3xl font-black uppercase tracking-tighter text-center mb-6">Nos Offres</h2>
+          <p className="text-center text-gray-500 max-w-2xl mx-auto mb-16">
+            Des solutions adaptées pour accélérer votre carrière, que vous soyez un talent émergent ou un créateur confirmé.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {PACKS.map(pack => (
+              <PackCard 
+                key={pack.id}
+                {...pack}
+                onBuy={() => handleBuy(pack.name)}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Team */}
-      <section className="py-20 bg-neutral-50 border-y border-neutral-200">
+      <section className="py-20">
         <div className="container px-4">
           <h2 className="text-3xl font-black uppercase tracking-tighter text-center mb-16">L'Équipe</h2>
           <div className="flex flex-col md:flex-row justify-center gap-12">
@@ -66,13 +134,13 @@ export default function AboutPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 max-w-3xl mx-auto px-4 w-full">
+      <section className="py-20 max-w-3xl mx-auto px-4 w-full bg-neutral-50 border-t border-neutral-200">
         <h2 className="text-3xl font-black uppercase tracking-tighter text-center mb-12">FAQ</h2>
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>Est-ce gratuit ?</AccordionTrigger>
             <AccordionContent>
-              L'inscription est gratuite. Des fonctionnalités premium sont disponibles via nos packs.
+              L'inscription est gratuite. Des fonctionnalités premium sont disponibles via nos packs ci-dessus.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="item-2">
@@ -94,3 +162,4 @@ export default function AboutPage() {
     </div>
   );
 }
+
