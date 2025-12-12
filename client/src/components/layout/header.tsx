@@ -4,8 +4,7 @@ import { Button } from "@/components/ui/button";
 import { 
   LogOut,
   Menu,
-  User,
-  LayoutDashboard
+  ChevronDown
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -17,8 +16,6 @@ import {
 export function Header() {
   const { user, logout } = useAuth();
   const [location] = useLocation();
-
-  const isAppPage = location.startsWith("/explore") || location.startsWith("/profile") || location.startsWith("/inbox");
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -33,31 +30,42 @@ export function Header() {
         <nav className="hidden md:flex items-center space-x-6 text-sm font-bold uppercase tracking-wide">
           {!user ? (
             <>
-              <Link href="/styliste">
-                <a className={location === "/styliste" ? "text-black" : "text-gray-500 hover:text-black transition-colors"}>
-                  Styliste
-                </a>
-              </Link>
-              <Link href="/jeune-styliste">
-                <a className={location === "/jeune-styliste" ? "text-black" : "text-gray-500 hover:text-black transition-colors"}>
-                  Jeune Talent
-                </a>
-              </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center gap-1 hover:text-gray-600 transition-colors focus:outline-none">
+                  Catégories <ChevronDown className="w-4 h-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem asChild>
+                    <Link href="/styliste" className="w-full cursor-pointer">Styliste</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/jeune-styliste" className="w-full cursor-pointer">Jeune Talent</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
               <Link href="/fonctionnalites">
                 <a className={location === "/fonctionnalites" ? "text-black" : "text-gray-500 hover:text-black transition-colors"}>
                   Fonctionnalités
                 </a>
               </Link>
-              <Link href="/packs">
-                <a className={location === "/packs" ? "text-black" : "text-gray-500 hover:text-black transition-colors"}>
-                  Offres
-                </a>
-              </Link>
-              <Link href="/about">
-                <a className={location === "/about" ? "text-black" : "text-gray-500 hover:text-black transition-colors"}>
-                  À propos
-                </a>
-              </Link>
+
+              <DropdownMenu>
+                <DropdownMenuTrigger className="flex items-center gap-1 hover:text-gray-600 transition-colors focus:outline-none">
+                  À propos <ChevronDown className="w-4 h-4" />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem asChild>
+                    <Link href="/about" className="w-full cursor-pointer">Notre Histoire</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/packs" className="w-full cursor-pointer">Nos Offres</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/contact" className="w-full cursor-pointer">Contact</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </>
           ) : (
             <>
@@ -117,8 +125,9 @@ export function Header() {
                     <DropdownMenuItem asChild><Link href="/styliste">Styliste</Link></DropdownMenuItem>
                     <DropdownMenuItem asChild><Link href="/jeune-styliste">Jeune Talent</Link></DropdownMenuItem>
                     <DropdownMenuItem asChild><Link href="/fonctionnalites">Fonctionnalités</Link></DropdownMenuItem>
-                    <DropdownMenuItem asChild><Link href="/packs">Offres</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/packs">Nos Offres</Link></DropdownMenuItem>
                     <DropdownMenuItem asChild><Link href="/about">À propos</Link></DropdownMenuItem>
+                    <DropdownMenuItem asChild><Link href="/contact">Contact</Link></DropdownMenuItem>
                     <DropdownMenuItem asChild><Link href="/auth">Connexion</Link></DropdownMenuItem>
                   </>
                 ) : (
@@ -137,3 +146,4 @@ export function Header() {
     </header>
   );
 }
+
