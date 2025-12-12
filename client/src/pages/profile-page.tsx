@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useRoute, useLocation } from "wouter";
 import { useAuth } from "@/context/auth-context";
 import { storage, User, Post, Contract } from "@/lib/storage";
-import { Layout } from "@/components/layout/layout";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ContractBadge } from "@/components/ui/contract-badge";
@@ -129,107 +128,105 @@ export default function ProfilePage() {
   };
 
   return (
-    <Layout>
-      <div className="container max-w-4xl py-8 px-4">
-        
-        {/* Profile Header */}
-        <div className="flex flex-col md:flex-row gap-8 items-center md:items-start mb-12">
-          <Avatar className="w-32 h-32 md:w-40 md:h-40 border-2">
-            <AvatarImage src={profileUser.avatar} className="object-cover" />
-            <AvatarFallback>{profileUser.username[0]}</AvatarFallback>
-          </Avatar>
+    <div className="container max-w-4xl py-8 px-4">
+      
+      {/* Profile Header */}
+      <div className="flex flex-col md:flex-row gap-8 items-center md:items-start mb-12">
+        <Avatar className="w-32 h-32 md:w-40 md:h-40 border-2">
+          <AvatarImage src={profileUser.avatar} className="object-cover" />
+          <AvatarFallback>{profileUser.username[0]}</AvatarFallback>
+        </Avatar>
 
-          <div className="flex-1 space-y-4 text-center md:text-left">
-            <div className="flex flex-col md:flex-row items-center gap-4">
-              <h1 className="text-2xl font-bold">{profileUser.username}</h1>
-              {profileUser.isOccupied && <ContractBadge />}
-              
-              {!isOwnProfile && (
-                <div className="flex gap-2 mt-2 md:mt-0">
-                  <Button 
-                    variant={currentUser?.following.includes(profileUser.id) ? "outline" : "default"}
-                    size="sm"
-                    onClick={handleFollow}
-                  >
-                    {currentUser?.following.includes(profileUser.id) ? "Following" : "Follow"}
-                  </Button>
-                  
-                  <Button 
-                    variant="secondary" 
-                    size="sm" 
-                    disabled={!canMessage}
-                    onClick={handleMessage}
-                    title={!canMessage ? "User is currently under contract" : "Send message"}
-                  >
-                    <Mail className="w-4 h-4 mr-2" />
-                    Message
-                  </Button>
+        <div className="flex-1 space-y-4 text-center md:text-left">
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <h1 className="text-2xl font-bold">{profileUser.username}</h1>
+            {profileUser.isOccupied && <ContractBadge />}
+            
+            {!isOwnProfile && (
+              <div className="flex gap-2 mt-2 md:mt-0">
+                <Button 
+                  variant={currentUser?.following.includes(profileUser.id) ? "outline" : "default"}
+                  size="sm"
+                  onClick={handleFollow}
+                >
+                  {currentUser?.following.includes(profileUser.id) ? "Following" : "Follow"}
+                </Button>
+                
+                <Button 
+                  variant="secondary" 
+                  size="icon" 
+                  disabled={!canMessage}
+                  onClick={handleMessage}
+                  title={!canMessage ? "User is currently under contract" : "Send message"}
+                  className="rounded-full w-10 h-10"
+                >
+                  <Mail className="w-4 h-4" />
+                </Button>
 
-                  {canContract && (
-                    <Dialog>
-                      <DialogTrigger asChild>
-                        <Button variant="destructive" size="sm">Propose Contract</Button>
-                      </DialogTrigger>
-                      <DialogContent>
-                        <DialogHeader>
-                          <DialogTitle>Propose Official Contract</DialogTitle>
-                          <DialogDescription>
-                            By proposing a contract, you are securing {profileUser.username} exclusively. 
-                            Their profile will be marked as "OCCUPIED" and other stylists will be blocked from messaging them.
-                          </DialogDescription>
-                        </DialogHeader>
-                        <DialogFooter>
-                          <Button onClick={handleProposeContract}>Confirm & Sign</Button>
-                        </DialogFooter>
-                      </DialogContent>
-                    </Dialog>
-                  )}
-                </div>
-              )}
+                {canContract && (
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button variant="destructive" size="sm">Propose Contract</Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Propose Official Contract</DialogTitle>
+                        <DialogDescription>
+                          By proposing a contract, you are securing {profileUser.username} exclusively. 
+                          Their profile will be marked as "OCCUPIED" and other stylists will be blocked from messaging them.
+                        </DialogDescription>
+                      </DialogHeader>
+                      <DialogFooter>
+                        <Button onClick={handleProposeContract}>Confirm & Sign</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                )}
+              </div>
+            )}
+          </div>
+
+          <div className="flex justify-center md:justify-start gap-6 text-sm">
+            <div className="text-center md:text-left">
+              <span className="font-bold block text-lg">{stats.posts}</span>
+              <span className="text-muted-foreground">posts</span>
             </div>
-
-            <div className="flex justify-center md:justify-start gap-6 text-sm">
-              <div className="text-center md:text-left">
-                <span className="font-bold block text-lg">{stats.posts}</span>
-                <span className="text-muted-foreground">posts</span>
-              </div>
-              <div className="text-center md:text-left">
-                <span className="font-bold block text-lg">{stats.followers}</span>
-                <span className="text-muted-foreground">followers</span>
-              </div>
-              <div className="text-center md:text-left">
-                <span className="font-bold block text-lg">{stats.following}</span>
-                <span className="text-muted-foreground">following</span>
-              </div>
+            <div className="text-center md:text-left">
+              <span className="font-bold block text-lg">{stats.followers}</span>
+              <span className="text-muted-foreground">followers</span>
             </div>
-
-            <div className="max-w-md">
-              <p className="font-medium">{profileUser.type === 'stylist' ? 'Stylist' : 'Young Stylist'}</p>
-              <p className="whitespace-pre-wrap text-sm text-muted-foreground">{profileUser.bio}</p>
+            <div className="text-center md:text-left">
+              <span className="font-bold block text-lg">{stats.following}</span>
+              <span className="text-muted-foreground">following</span>
             </div>
           </div>
-        </div>
 
-        <Separator className="my-8" />
-
-        {/* Gallery */}
-        <div className="grid grid-cols-3 gap-1 md:gap-4">
-            {posts.map(post => (
-                <div key={post.id} className="relative aspect-square group bg-neutral-100 overflow-hidden">
-                    <img src={post.imageUrl} className="w-full h-full object-cover" />
-                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white gap-2">
-                         <Heart className="w-5 h-5 fill-white" /> {post.likes.length}
-                    </div>
-                </div>
-            ))}
-            {/* Add more placeholders to fill grid if empty */}
-            {posts.length === 0 && (
-                <div className="col-span-3 py-12 text-center text-muted-foreground border-2 border-dashed rounded-lg">
-                    No posts yet
-                </div>
-            )}
+          <div className="max-w-md">
+            <p className="font-medium">{profileUser.type === 'stylist' ? 'Stylist' : 'Young Stylist'}</p>
+            <p className="whitespace-pre-wrap text-sm text-muted-foreground">{profileUser.bio}</p>
+          </div>
         </div>
       </div>
-    </Layout>
+
+      <Separator className="my-8" />
+
+      {/* Gallery */}
+      <div className="grid grid-cols-3 gap-1 md:gap-4">
+          {posts.map(post => (
+              <div key={post.id} className="relative aspect-square group bg-neutral-100 overflow-hidden">
+                  <img src={post.imageUrl} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center text-white gap-2">
+                       <Heart className="w-5 h-5 fill-white" /> {post.likes.length}
+                  </div>
+              </div>
+          ))}
+          {/* Add more placeholders to fill grid if empty */}
+          {posts.length === 0 && (
+              <div className="col-span-3 py-12 text-center text-muted-foreground border-2 border-dashed rounded-lg">
+                  No posts yet
+              </div>
+          )}
+      </div>
+    </div>
   );
 }
