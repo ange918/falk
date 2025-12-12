@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, Router as WouterRouter } from "wouter";
 import { AuthProvider } from "@/context/auth-context";
 import { Toaster } from "@/components/ui/toaster";
 import NotFound from "@/pages/not-found";
@@ -20,7 +20,7 @@ import ContactPage from "@/pages/marketing/contact";
 import AdminPage from "@/pages/marketing/admin";
 import { Layout } from "@/components/layout/layout";
 
-function Router() {
+function AppRouter() {
   return (
     <Switch>
       {/* Marketing Routes (Public) */}
@@ -47,10 +47,12 @@ function Router() {
 function App() {
   return (
     <AuthProvider>
-      <Layout>
-        <Router />
-      </Layout>
-      <Toaster />
+      <WouterRouter>
+        <Layout>
+          <AppRouter />
+        </Layout>
+        <Toaster />
+      </WouterRouter>
     </AuthProvider>
   );
 }
