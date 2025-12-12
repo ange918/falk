@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useAuth } from "@/context/auth-context";
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
@@ -10,13 +10,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Upload } from "lucide-react";
+import { Upload, X } from "lucide-react";
 
 export default function AuthPage() {
   const { login, register, user } = useAuth();
   const [, setLocation] = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const [acceptedPolicy, setAcceptedPolicy] = useState(false);
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Redirect if already logged in
   if (user) {
@@ -35,6 +37,29 @@ export default function AuthPage() {
       alert("Utilisateur non trouvé (Essayez 'anna@fashion.com' ou 'jean@design.com')");
     }
     setIsLoading(false);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setAvatarPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
+  const removeImage = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setAvatarPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
   };
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -58,7 +83,7 @@ export default function AuthPage() {
       phone: (form.elements.namedItem('phone') as HTMLInputElement).value,
       type: (form.elements.namedItem('type') as HTMLInputElement).value as any,
       bio: (form.elements.namedItem('bio') as HTMLTextAreaElement).value,
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop' 
+      avatar: avatarPreview || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=400&h=400&fit=crop' 
     });
     
     setIsLoading(false);
@@ -84,8 +109,8 @@ export default function AuthPage() {
         </div>
       </div>
 
-      <div className="flex items-center justify-center p-6 lg:p-12 overflow-y-auto max-h-screen">
-        <div className="w-full max-w-md space-y-8 py-8">
+      <div className="flex items-start justify-center p-6 lg:p-12 overflow-y-auto max-h-screen">
+        <div className="w-full max-w-md space-y-8 py-8 lg:py-0">
           <div className="text-center lg:hidden">
              <h1 className="text-3xl font-black tracking-tighter">FASH’LINK</h1>
           </div>
@@ -178,10 +203,33 @@ export default function AuthPage() {
 
                     <div className="space-y-2">
                        <Label>Photo de profil</Label>
-                       <div className="border-2 border-dashed border-gray-200 p-6 text-center hover:bg-gray-50 cursor-pointer transition-colors">
-                          <Upload className="w-6 h-6 mx-auto mb-2 text-gray-400" />
-                          <span className="text-xs text-gray-500">Cliquez pour uploader une photo</span>
-                          <input type="file" className="hidden" accept="image/*" />
+                       <div 
+                         onClick={triggerFileInput}
+                         className="relative border-2 border-dashed border-gray-200 p-6 text-center hover:bg-gray-50 cursor-pointer transition-colors group overflow-hidden"
+                       >
+                          {avatarPreview ? (
+                            <div className="relative">
+                              <img src={avatarPreview} alt="Preview" className="w-24 h-24 mx-auto object-cover rounded-full" />
+                              <button 
+                                onClick={removeImage}
+                                className="absolute top-0 right-1/4 -mr-2 -mt-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 transition-colors"
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          ) : (
+                            <>
+                              <Upload className="w-6 h-6 mx-auto mb-2 text-gray-400 group-hover:text-black transition-colors" />
+                              <span className="text-xs text-gray-500 group-hover:text-black transition-colors">Cliquez pour uploader une photo</span>
+                            </>
+                          )}
+                          <input 
+                            ref={fileInputRef}
+                            type="file" 
+                            className="hidden" 
+                            accept="image/*" 
+                            onChange={handleFileChange}
+                          />
                        </div>
                     </div>
 
